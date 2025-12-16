@@ -1,0 +1,35 @@
+// tsconfig.json (請將此內容貼入專案根目錄下的 tsconfig.json)
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node", // 使用 node 解析模式
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "strict": true,
+
+        // ***** 關鍵修正：確保 baseUrl 和 paths 正確對應 *****
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/js/*"]
+        }
+    },
+    // 關鍵：告訴 TypeScript 包含哪些檔案
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.tsx",
+
+        "resources/js/**/*.js",
+        "resources/firebase.js",
+        "resources/js/custom.d.ts"
+    ],
+
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
