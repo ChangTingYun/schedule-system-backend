@@ -1,14 +1,12 @@
 <?php
 
-// 警告：將敏感資訊直接放入配置檔中並不理想，
-// 但這是繞過環境變數解析器錯誤的最終手段。
-
 return [
     'projects' => [
         'app' => [
             'credentials' => [
-                // 將您清理過的 JSON 字串貼入這裡
-                'file' => base_path(env('FIREBASE_CREDENTIALS_PATH', 'firebase-credentials.json')),
+                // 檢查 FIREBASE_CREDENTIALS 環境變數是否存在，如果存在，則將其作為憑證內容。
+                // 這裡我們直接傳入 JSON 字串，Firebase SDK 會處理它。
+                'credentials' => env('FIREBASE_CREDENTIALS', null),
             ],
         ],
     ],
