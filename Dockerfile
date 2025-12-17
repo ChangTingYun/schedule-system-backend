@@ -2,6 +2,7 @@
 
 # 使用帶有 PHP-FPM 的 Alpine Linux 作為基礎映像檔
 FROM php:8.2-fpm
+FROM php:8.5-cli
 
 # 安裝系統依賴項
 # gettext 包含 envsubst，雖然我們使用 sed，但這個包在處理環境變數時很有用。
@@ -26,7 +27,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 安裝 PHP 擴展
-RUN docker-php-ext-install pdo_mysql zip opcache dom intl
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --ignore-platform-reqs --verbose
+
 
 # 安裝 Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -56,3 +58,5 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 # Render 部署指令：執行 start.sh 腳本
 # start.sh 會負責替換 Nginx 埠號，並啟動 Nginx 和 PHP-FPM
 CMD ["sh", "-c", "/usr/sbin/php-fpm -F & exec /usr/sbin/nginx -g 'daemon off;'"]
+
+RUN php -v
