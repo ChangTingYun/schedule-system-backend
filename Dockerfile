@@ -5,7 +5,9 @@ FROM php:8.2-fpm
 
 # 安裝系統依賴項
 # gettext 包含 envsubst，雖然我們使用 sed，但這個包在處理環境變數時很有用。
-RUN apk add --no-cache \
+# 修正後的指令：使用 apt-get install 且在之前先更新列表
+# 安裝系統依賴項
+RUN apt-get update && apt-get install -y \
     nginx \
     git \
     curl \
@@ -16,8 +18,9 @@ RUN apk add --no-cache \
     npm \
     bash \
     gettext \
-    # 安裝必要的工具，例如 sed 所在的 coreutils
-    coreutils 
+    coreutils \
+    # 安裝必要的工具，例如 sed 所在的 coreutils (在 Debian 上通常包含在 coreutils)
+    && rm -rf /var/lib/apt/lists/*
 
 # 安裝 PHP 擴展
 RUN docker-php-ext-install pdo_mysql zip opcache
