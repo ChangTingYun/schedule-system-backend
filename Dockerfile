@@ -1,7 +1,7 @@
 # Dockerfile: Final Optimized Version for Render Deployment
 
 # 使用帶有 PHP-FPM 的 Alpine Linux 作為基礎映像檔
-FROM php:8.2-fpm-alpine
+FROM php:8.2-fpm
 
 # 安裝系統依賴項
 # gettext 包含 envsubst，雖然我們使用 sed，但這個包在處理環境變數時很有用。
@@ -32,7 +32,10 @@ WORKDIR /var/www/html
 COPY . .
 
 # 安裝 Laravel 依賴
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --ignore-platform-reqs \
+    --optimize-autoloader \
+    --no-dev \
+    --memory-limit=1G
 
 # 設定權限 (標準的 Laravel 權限設定)
 RUN chown -R www-data:www-data /var/www/html \
