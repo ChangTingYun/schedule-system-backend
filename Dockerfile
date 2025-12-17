@@ -42,9 +42,8 @@ RUN chown -R www-data:www-data /var/www/html \
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # 複製並設定啟動腳本 (start.sh)
-COPY start.sh /usr/local/bin/start.sh
-RUN chmod +x /usr/local/bin/start.sh
+
 
 # Render 部署指令：執行 start.sh 腳本
 # start.sh 會負責替換 Nginx 埠號，並啟動 Nginx 和 PHP-FPM
-CMD ["/usr/local/bin/start.sh"]
+CMD ["sh", "-c", "/usr/sbin/php-fpm -F & exec /usr/sbin/nginx -g 'daemon off;'"]
