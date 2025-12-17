@@ -40,9 +40,9 @@ WORKDIR /var/www/html
 COPY . .
 
 # 安裝 Laravel 依賴
+# 新增 --no-scripts，強制跳過任何可能調用 npm 的安裝後腳本
 RUN composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction --ignore-platform-reqs \
-    --optimize-autoloader \
-    --no-dev \
+    --no-scripts \
     --memory-limit=1G
 
 # 設定權限 (標準的 Laravel 權限設定)
@@ -60,3 +60,6 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 CMD ["sh", "-c", "/usr/sbin/php-fpm -F & exec /usr/sbin/nginx -g 'daemon off;'"]
 
 RUN php -v
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
