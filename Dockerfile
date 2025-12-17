@@ -19,11 +19,14 @@ RUN apt-get update && apt-get install -y \
     bash \
     gettext \
     coreutils \
+    libxml2-dev \
+    libzip-dev \
+    libicu-dev \
     # 安裝必要的工具，例如 sed 所在的 coreutils (在 Debian 上通常包含在 coreutils)
     && rm -rf /var/lib/apt/lists/*
 
 # 安裝 PHP 擴展
-RUN docker-php-ext-install pdo_mysql zip opcache
+RUN docker-php-ext-install pdo_mysql zip opcache dom intl
 
 # 安裝 Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
